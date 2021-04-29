@@ -43,7 +43,24 @@ try:
 except:
     timestr = DEFAULTTIME
 
-seconds = convert_timestr_to_secs(timestr)
-if seconds == 0:
-    seconds = convert_timestr_to_secs(DEFAULTTIME)
-print(seconds)
+secs = convert_timestr_to_secs(timestr)
+if secs == 0:
+    secs = convert_timestr_to_secs(DEFAULTTIME)
+
+timeline = convert_timefmt(TIMEFMT)
+
+while secs >= 0:
+    min_str = str(secs // 60)
+    sec_str = str(secs % 60)
+
+    # Prepend a 0 if the str is single digit
+    if len(min_str) == 1:
+        min_str = "0" + min_str
+    if len(sec_str) == 1:
+        sec_str = "0" + sec_str
+    
+    print(timeline.format(min_str[0], min_str[1], sec_str[0], sec_str[1]))
+    if secs == 0:
+        sys.exit()
+    secs -= 1
+    sleep(1)
