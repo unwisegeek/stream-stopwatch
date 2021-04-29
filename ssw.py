@@ -24,13 +24,9 @@ def convert_timefmt(time):
 
 def convert_timestr_to_secs(timestr):
     secs = 0
-    hours = re.findall("\d*h", timestr)
-    minutes = re.findall("\d*m", timestr)
-    seconds = re.findall("\d*s", timestr)
-
-    print(hours)
-    print(minutes)
-    print(seconds)
+    hours = re.findall("\d+h", timestr)
+    minutes = re.findall("\d+m", timestr)
+    seconds = re.findall("\d+s", timestr)
 
     if len(hours) > 0:
         secs += int(hours[0].strip("h")) * 3600
@@ -38,6 +34,7 @@ def convert_timestr_to_secs(timestr):
         secs += int(minutes[0].strip("m")) * 60
     if len(seconds) > 0:
         secs += int(seconds[0].strip("s"))
+    return secs
 
 
 # Get time for stopwatch from command line, or default to DEFAULTTIME
