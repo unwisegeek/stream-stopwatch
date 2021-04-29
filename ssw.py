@@ -22,22 +22,31 @@ def convert_timefmt(time):
             new_str += time[n]
     return new_str
 
+def convert_timestr_to_secs(timestr):
+    secs = 0
+    hours = re.findall("\d*h", timestr)
+    minutes = re.findall("\d*m", timestr)
+    seconds = re.findall("\d*s", timestr)
+
+    print(hours)
+    print(minutes)
+    print(seconds)
+
+    if len(hours) > 0:
+        secs += int(hours[0].strip("h")) * 3600
+    if len(minutes) > 0:
+        secs += int(minutes[0].strip("m")) * 60
+    if len(seconds) > 0:
+        secs += int(seconds[0].strip("s"))
+
+
 # Get time for stopwatch from command line, or default to DEFAULTTIME
 try:
     timestr = sys.argv[1]
 except:
     timestr = DEFAULTTIME
 
-hours = re.findall("\d*h", timestr)
-minutes = re.findall("\d*m", timestr)
-seconds = re.findall("\d*s", timestr)
-secs = 0
-
-if hours:
-    secs += int(hours[0].strip("h")) * 3600
-if minutes:
-    secs += int(minutes[0].strip("m")) * 60
-if seconds:
-    secs += int(seconds[0].strip("s"))
-
-print(secs)
+seconds = convert_timestr_to_secs(timestr)
+if seconds == 0:
+    seconds = convert_timestr_to_secs(DEFAULTTIME)
+print(seconds)
