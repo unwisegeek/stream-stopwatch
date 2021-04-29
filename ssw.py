@@ -46,7 +46,11 @@ def convert_timestr_to_secs(timestr):
 
 # Get time for stopwatch from command line, or default to DEFAULTTIME
 try:
-    timestr = sys.argv[1]
+    # Squash all arguments
+    args = ""
+    for i in range(1, len(sys.argv)):
+        args += sys.argv[i]
+    timestr = args
 except:
     timestr = DEFAULTTIME
 
@@ -57,7 +61,6 @@ if secs == 0:
 timeline = convert_timefmt(TIMEFMT)
 
 # Open CDFILE for writing.
-print("Opening {}".format(CDFILE.replace('~', USERHOME)))
 f = open(CDFILE.replace('~', USERHOME), 'w+')
 
 while secs >= 0:
