@@ -5,6 +5,7 @@ import sys, re
 
 # Constants, don't change these.
 USERHOME = expanduser("~")
+USAGESTR = "Usage: python3 ssw.py <optional: time string>"
 
 # Configuration values, you can change these.
 
@@ -43,6 +44,10 @@ def convert_timestr_to_secs(timestr):
         secs += int(seconds[0].strip("s"))
     return secs
 
+# Check for help argument and print the usage string.
+if sys.argv[1] == "--help" or sys.argv[1] == "-h" or sys.argv[1] == "/?":
+    print(USAGESTR)
+    sys.exit()
 
 # Get time for stopwatch from command line, or default to DEFAULTTIME
 try:
