@@ -1,8 +1,12 @@
 from time import sleep
 from math import floor
+from os.path import expanduser
 import sys, re
 
-# Constants, change these to suit your needs.
+# Constants, don't change these.
+USERHOME = expanduser("~")
+
+# Configuration values, you can change these.
 
 # Replace or rearrange the following to suit 
 # your needs. Must contain 2 M's and 2 S's
@@ -12,6 +16,9 @@ TIMEFMT = "T - M M : S S"
 # countdown from if no time is given on the
 # command line.
 DEFAULTTIME = "0h10m0s"
+
+# Replace this with the path of the file
+CDFILE="~/obs-countdown"
 
 def convert_timefmt(time):
     new_str = ""
@@ -49,6 +56,10 @@ if secs == 0:
 
 timeline = convert_timefmt(TIMEFMT)
 
+# Open CDFILE for writing.
+print("Opening {}".format(CDFILE.replace('~', USERHOME)))
+f = open(CDFILE.replace('~', USERHOME), 'w+')
+
 while secs >= 0:
     min_str = str(secs // 60)
     sec_str = str(secs % 60)
@@ -59,8 +70,18 @@ while secs >= 0:
     if len(sec_str) == 1:
         sec_str = "0" + sec_str
     
-    print(timeline.format(min_str[0], min_str[1], sec_str[0], sec_str[1]))
+    # Overwrite the contents of the file
+    f.seek(0)
+    f.write(timeline.format(min_str[0], min_str[1], sec_str[0], sec_str[1]))
+    f.truncate()
+
+    # Close the file and bail out if 0
     if secs == 0:
+        f.close()
         sys.exit()
+    # Subtract and sleep if not 0.
     secs -= 1
     sleep(1)
+
+# Close the file in case we break out of the loop somehow.
+f.close()
